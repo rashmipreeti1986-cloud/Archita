@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CyberWise — a student-friendly guide to cyber security, strong passwords, online safety and cybercrime awareness." />
+  <title>CyberWise | Think Before You Click</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: #101f32;
+      --panel-2: #14263b;
+      --ink: #eef6ff;
+      --muted: #a9bbcd;
+      --cyan: #55e6e0;
+      --blue: #73a7ff;
+      --lime: #c7f36b;
+      --warning: #ffcb70;
+      --danger: #ff7c91;
+      --line: rgba(177, 207, 235, .16);
+      --shadow: 0 20px 55px rgba(0,0,0,.22);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 2%, rgba(36, 176, 190, .16), transparent 28rem),
+        radial-gradient(circle at 88% 18%, rgba(94, 118, 255, .15), transparent 30rem),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+    a { color: var(--cyan); }
+    button, input { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(7, 17, 31, .82); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { display:flex; align-items:center; justify-content:space-between; gap:20px; min-height:74px; }
+    .brand { display:flex; align-items:center; gap:11px; color:var(--ink); text-decoration:none; font-weight:850; letter-spacing:.08em; }
+    .brand-mark { display:grid; place-items:center; width:38px; height:38px; border-radius:12px; color:#07111f; background:linear-gradient(135deg,var(--cyan),var(--lime)); font-size:20px; }
+    .brand span:last-child { font-size:14px; }
+    .nav-links { display:flex; align-items:center; flex-wrap:wrap; gap:20px; }
+    .nav-links a { color:var(--muted); text-decoration:none; font-size:13px; font-weight:700; transition:color .2s; }
+    .nav-links a:hover { color:var(--cyan); }
+    .menu-btn { display:none; border:1px solid var(--line); color:var(--ink); background:var(--panel); padding:8px 12px; border-radius:10px; }
+
+    .hero { padding:82px 0 62px; display:grid; grid-template-columns:1.12fr .88fr; gap:42px; align-items:center; }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; color:var(--cyan); border:1px solid rgba(85,230,224,.28); background:rgba(85,230,224,.07); padding:7px 12px; border-radius:999px; font-size:11px; font-weight:850; letter-spacing:.12em; text-transform:uppercase; }
+    h1 { font-size:clamp(42px, 6vw, 72px); line-height:1.02; letter-spacing:-.055em; margin:20px 0 18px; }
+    h1 .accent { color:var(--cyan); }
+    .hero-copy { max-width:610px; color:var(--muted); font-size:17px; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:9px; border:0; border-radius:12px; padding:12px 17px; text-decoration:none; font-weight:850; font-size:14px; cursor:pointer; transition:transform .2s, filter .2s; }
+    .btn:hover { transform:translateY(-2px); filter:brightness(1.06); }
+    .btn-primary { background:linear-gradient(110deg,var(--cyan),var(--lime)); color:#07111f; }
+    .btn-secondary { color:var(--ink); background:rgba(255,255,255,.05); border:1px solid var(--line); }
+    .hero-art { min-height:350px; position:relative; display:grid; place-items:center; }
+    .orbit { width:min(330px,75vw); aspect-ratio:1; border:1px solid rgba(85,230,224,.25); border-radius:50%; display:grid; place-items:center; position:relative; box-shadow:0 0 80px rgba(85,230,224,.08), inset 0 0 60px rgba(85,230,224,.06); }
+    .orbit:before,.orbit:after { content:""; position:absolute; inset:22px; border:1px dashed rgba(115,167,255,.32); border-radius:50%; }
+    .orbit:after { inset:52px; border-style:solid; border-color:rgba(199,243,107,.23); }
+    .shield { z-index:1; width:142px; height:165px; display:grid; place-items:center; clip-path:polygon(50% 0,92% 15%,86% 67%,50% 100%,14% 67%,8% 15%); background:linear-gradient(155deg, #9affef, #4da9e9 55%, #6678f6); color:#082038; font-size:63px; filter:drop-shadow(0 15px 25px rgba(85,230,224,.25)); }
+    .orbit-tag { position:absolute; z-index:2; border:1px solid var(--line); background:#102238; color:var(--ink); padding:8px 11px; border-radius:11px; font-size:12px; font-weight:800; box-shadow:var(--shadow); }
+    .tag-a { top:17%; right:-5%; } .tag-b { bottom:17%; left:-7%; } .tag-c { top:4%; left:12%; }
+    .hero-note { position:absolute; bottom:0; right:4%; color:var(--muted); font-size:11px; letter-spacing:.06em; }
+
+    .section { padding:68px 0; }
+    .section-head { max-width:720px; margin-bottom:30px; }
+    .kicker { color:var(--cyan); text-transform:uppercase; font-weight:900; letter-spacing:.15em; font-size:11px; }
+    h2 { font-size:clamp(29px,4vw,43px); letter-spacing:-.035em; line-height:1.12; margin:9px 0 12px; }
+    .section-head p { color:var(--muted); margin:0; }
+    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .card { background:linear-gradient(160deg,rgba(20,38,59,.96),rgba(12,27,44,.96)); border:1px solid var(--line); border-radius:var(--radius); padding:23px; box-shadow:var(--shadow); }
+    .card-icon { width:43px; height:43px; display:grid; place-items:center; border-radius:13px; background:rgba(85,230,224,.1); font-size:21px; margin-bottom:16px; }
+    .card h3 { margin:0 0 8px; font-size:18px; }
+    .card p { color:var(--muted); font-size:14px; margin:0; }
+    .risk-level { display:inline-block; margin-top:16px; color:var(--warning); font-size:10px; text-transform:uppercase; font-weight:900; letter-spacing:.12em; }
+
+    .split { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; }
+    .rules { display:grid; gap:11px; }
+    .rule { display:flex; gap:12px; padding:13px 14px; border:1px solid var(--line); background:rgba(255,255,255,.025); border-radius:14px; }
+    .tick { color:var(--lime); font-weight:1000; font-size:18px; line-height:1.2; }
+    .rule strong { display:block; font-size:14px; }
+    .rule small { color:var(--muted); display:block; margin-top:3px; font-size:12px; }
+    .checker { background:linear-gradient(150deg,rgba(16,39,58,.98),rgba(12,26,43,.98)); border:1px solid rgba(85,230,224,.25); border-radius:var(--radius); padding:25px; box-shadow:var(--shadow); }
+    .checker h3 { margin:0 0 5px; font-size:21px; }
+    .checker-intro { color:var(--muted); margin:0 0 18px; font-size:13px; }
+    .input-row { display:flex; gap:8px; }
+    .password-input { min-width:0; flex:1; padding:13px 14px; background:#071522; color:var(--ink); border:1px solid #29435a; border-radius:11px; outline:none; }
+    .password-input:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(85,230,224,.1); }
+    .toggle-btn { padding:0 13px; border:1px solid var(--line); border-radius:11px; background:var(--panel-2); color:var(--ink); cursor:pointer; }
+    .privacy-note { color:var(--cyan); font-size:11px; margin:10px 0 18px; }
+    .meter-top { display:flex; justify-content:space-between; gap:12px; font-size:12px; font-weight:850; margin-bottom:8px; }
+    .meter { height:9px; border-radius:999px; background:#26394b; overflow:hidden; }
+    .meter-fill { height:100%; width:0%; border-radius:999px; background:var(--danger); transition:width .25s,background .25s; }
+    .checks { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:17px; }
+    .check { color:var(--muted); font-size:12px; display:flex; gap:7px; align-items:flex-start; }
+    .check.good { color:var(--lime); }
+    .check .dot { font-weight:900; }
+    .checker-result { min-height:38px; color:var(--muted); font-size:12px; margin:16px 0 0; }
+    .small-print { color:#8499ad; font-size:10px; margin-top:12px; }
+
+    .awareness { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .step-card { padding:19px; border-radius:18px; border:1px solid var(--line); background:rgba(255,255,255,.035); }
+    .step-num { color:var(--cyan); font-size:12px; font-weight:900; letter-spacing:.12em; }
+    .step-card h3 { margin:8px 0 6px; font-size:17px; }
+    .step-card p { color:var(--muted); font-size:13px; margin:0; }
+    .alert { margin-top:20px; padding:19px 21px; border-radius:17px; border:1px solid rgba(255,203,112,.3); background:rgba(255,203,112,.07); display:flex; gap:14px; align-items:flex-start; }
+    .alert strong { color:var(--warning); }
+    .alert p { color:var(--muted); margin:3px 0 0; font-size:13px; }
+
+    .facts-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .fact { display:flex; gap:15px; border:1px solid var(--line); background:rgba(255,255,255,.03); padding:18px; border-radius:16px; }
+    .fact-mark { color:var(--lime); font-size:22px; font-weight:900; }
+    .fact p { color:var(--muted); font-size:13px; margin:0; }
+    .fact strong { color:var(--ink); }
+
+    .quiz-shell { max-width:790px; background:linear-gradient(150deg,rgba(20,38,59,.98),rgba(10,25,42,.98)); border:1px solid rgba(115,167,255,.25); border-radius:var(--radius); padding:25px; box-shadow:var(--shadow); }
+    .quiz-top { display:flex; justify-content:space-between; align-items:center; gap:12px; color:var(--muted); font-size:12px; font-weight:800; }
+    .quiz-progress { height:6px; background:#26394b; border-radius:999px; overflow:hidden; margin:13px 0 22px; }
+    .quiz-progress span { display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--cyan),var(--lime)); transition:width .25s; }
+    .quiz-question { font-size:21px; font-weight:850; margin:0 0 17px; line-height:1.35; }
+    .answers { display:grid; gap:9px; }
+    .answer { text-align:left; border:1px solid #2a4055; color:var(--ink); background:rgba(255,255,255,.035); border-radius:12px; padding:12px 14px; cursor:pointer; transition:border .2s,background .2s; }
+    .answer:hover:not(:disabled) { border-color:var(--cyan); background:rgba(85,230,224,.07); }
+    .answer:disabled { cursor:default; opacity:1; }
+    .answer.correct { border-color:var(--lime); background:rgba(199,243,107,.1); }
+    .answer.wrong { border-color:var(--danger); background:rgba(255,124,145,.09); }
+    .feedback { min-height:43px; color:var(--muted); font-size:13px; margin:14px 0 6px; }
+    .quiz-actions { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:12px; }
+    .quiz-score { color:var(--lime); font-weight:900; font-size:14px; }
+    .quiz-result { text-align:center; padding:18px 0 8px; }
+    .quiz-result .big-score { font-size:54px; font-weight:950; color:var(--cyan); letter-spacing:-.06em; }
+    .quiz-result p { color:var(--muted); }
+    .hidden { display:none !important; }
+
+    .report-banner { display:flex; align-items:center; justify-content:space-between; gap:24px; background:linear-gradient(105deg,rgba(29,95,111,.55),rgba(40,60,106,.55)); border:1px solid rgba(85,230,224,.25); border-radius:var(--radius); padding:25px 28px; }
+    .report-banner h3 { font-size:22px; margin:0 0 5px; }
+    .report-banner p { color:var(--muted); margin:0; font-size:13px; max-width:650px; }
+    .report-actions { display:flex; flex-wrap:wrap; gap:10px; flex-shrink:0; }
+    .source-list { color:var(--muted); font-size:12px; padding-left:18px; }
+    .source-list li { margin:6px 0; }
+    footer { border-top:1px solid var(--line); padding:26px 0 35px; color:#8499ad; font-size:12px; }
+    .footer-inner { display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    .back-top { text-decoration:none; }
+
+    @media (max-width:850px) {
+      .hero { grid-template-columns:1fr; padding-top:58px; }
+      .hero-art { min-height:300px; }
+      .grid-3 { grid-template-columns:1fr 1fr; }
+      .awareness { grid-template-columns:1fr 1fr; }
+      .report-banner { align-items:flex-start; flex-direction:column; }
+    }
+    @media (max-width:620px) {
+      .wrap { width:min(100% - 28px, 1120px); }
+      .nav { min-height:66px; }
+      .menu-btn { display:block; }
+      .nav-links { display:none; position:absolute; top:66px; left:0; right:0; padding:15px 22px 18px; background:#0b1929; border-bottom:1px solid var(--line); flex-direction:column; align-items:flex-start; gap:13px; }
+      .nav-links.open { display:flex; }
+      .hero { padding:45px 0 40px; gap:14px; }
+      .hero-copy { font-size:15px; }
+      .hero-art { min-height:270px; }
+      .orbit { width:245px; }
+      .shield { width:105px; height:125px; font-size:46px; }
+      .tag-a { right:-3%; } .tag-b { left:-3%; }
+      .section { padding:48px 0; }
+      .grid-3,.split,.facts-grid { grid-template-columns:1fr; }
+      .awareness { grid-template-columns:1fr 1fr; gap:10px; }
+      .step-card { padding:15px; }
+      .checker,.quiz-shell { padding:18px; }
+      .checks { grid-template-columns:1fr; }
+      .input-row { flex-wrap:wrap; }
+      .password-input { flex-basis:100%; }
+      .toggle-btn { padding:9px 12px; }
+      .report-actions { width:100%; }
+      .report-actions .btn { flex:1; }
+    }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*::before,*::after { transition:none !important; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#home" aria-label="CyberWise home"><span class="brand-mark">⛨</span><span>CYBER<span style="color:var(--cyan)">WISE</span></span></a>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="#risks">Cyber risks</a><a href="#passwords">Passwords</a><a href="#awareness">Awareness corner</a><a href="#facts">Quick facts</a><a href="#quiz">Take the quiz</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="wrap hero">
+      <div>
+        <span class="eyebrow">✦ Your digital safety starts here</span>
+        <h1>Think smart.<br /><span class="accent">Stay secure.</span></h1>
+        <p class="hero-copy">The internet opens a world of possibilities — but staying safe online takes awareness. Learn how cybercrime works, protect your accounts and become a more confident digital citizen.</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#passwords">Check password strength <span>↗</span></a><a class="btn btn-secondary" href="#quiz">Test your knowledge</a></div>
+      </div>
+      <div class="hero-art" aria-label="Decorative digital security shield illustration">
+        <div class="orbit"><div class="shield">✓</div><span class="orbit-tag tag-a">🔐 Privacy</span><span class="orbit-tag tag-b">🛡️ Protection</span><span class="orbit-tag tag-c">✦ Awareness</span></div>
+        <div class="hero-note">SECURE YOUR DIGITAL FOOTPRINT</div>
+      </div>
+    </section>
+
+    <section class="section" id="risks">
+      <div class="wrap">
+        <div class="section-head"><div class="kicker">01 / Know the risks</div><h2>How could someone become a victim of cybercrime?</h2><p>Cybercrime can affect anyone. It often begins with a small mistake, a convincing message or information shared without checking.</p></div>
+        <div class="grid-3">
+          <article class="card"><div class="card-icon">🎣</div><h3>Phishing messages</h3><p>A fake email, text or social-media message may pretend to come from a trusted service and trick someone into sharing login or payment details.</p><span class="risk-level">Watch for urgent links</span></article>
+          <article class="card"><div class="card-icon">🔓</div><h3>Weak or reused passwords</h3><p>Short, predictable or repeated passwords can make several accounts vulnerable if one password is exposed.</p><span class="risk-level">Protect every account</span></article>
+          <article class="card"><div class="card-icon">🎭</div><h3>Impersonation scams</h3><p>A scammer may pretend to be a friend, teacher, company or official to create trust and request money or private information.</p><span class="risk-level">Verify who is asking</span></article>
+          <article class="card"><div class="card-icon">🪪</div><h3>Identity theft</h3><p>Personal details or account access may be misused to impersonate someone, open accounts or deceive other people.</p><span class="risk-level">Keep personal data private</span></article>
+          <article class="card"><div class="card-icon">🦠</div><h3>Malware and ransomware</h3><p>Harmful software can disrupt devices, steal information or lock access to files. Suspicious downloads and attachments can be risky.</p><span class="risk-level">Download carefully</span></article>
+          <article class="card"><div class="card-icon">💬</div><h3>Cyberbullying and harassment</h3><p>Repeated hurtful messages, threats or sharing someone's private content without permission can cause real harm.</p><span class="risk-level">Block, save evidence, report</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="passwords">
+      <div class="wrap">
+        <div class="section-head"><div class="kicker">02 / Lock it down</div><h2>Build a stronger password.</h2><p>A good password should be long, difficult to guess and different for every account. A password manager can help you keep track of unique passwords.</p></div>
+        <div class="split">
+          <div class="rules">
+            <div class="rule"><span class="tick">✓</span><div><strong>Make it long</strong><small>Aim for at least 14 characters; a longer passphrase can be easier to remember.</small></div></div>
+            <div class="rule"><span class="tick">✓</span><div><strong>Mix character types</strong><small>Use a combination of uppercase and lowercase letters, numbers and symbols where supported.</small></div></div>
+            <div class="rule"><span class="tick">✓</span><div><strong>Keep it unique</strong><small>Use a different password for each important account.</small></div></div>
+            <div class="rule"><span class="tick">✓</span><div><strong>Avoid personal clues</strong><small>Do not use your name, birthday, school, phone number or obvious sequences.</small></div></div>
+            <div class="rule"><span class="tick">✓</span><div><strong>Turn on multi-factor authentication</strong><small>MFA adds another verification step, so a password alone is less likely to be enough.</small></div></div>
+          </div>
+          <div class="checker">
+            <h3>🔐 Password strength checker</h3>
+            <p class="checker-intro">Try a made-up sample password to see how the checks work.</p>
+            <div class="input-row"><input class="password-input" id="passwordInput" type="password" placeholder="Type a sample password…" autocomplete="off" spellcheck="false" aria-label="Sample password" /><button class="toggle-btn" id="togglePassword" type="button">Show</button></div>
+            <p class="privacy-note">🔒 This demo checks your text only in this browser. It does not send or save it.</p>
+            <div class="meter-top"><span>Estimated strength</span><span id="strengthLabel">Not checked</span></div>
+            <div class="meter" role="progressbar" aria-label="Password strength" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="meter"><div class="meter-fill" id="meterFill"></div></div>
+            <div class="checks" id="checks">
+              <div class="check" data-check="length"><span class="dot">○</span> 14+ characters</div>
+              <div class="check" data-check="lower"><span class="dot">○</span> Lowercase letter</div>
+              <div class="check" data-check="upper"><span class="dot">○</span> Uppercase letter</div>
+              <div class="check" data-check="number"><span class="dot">○</span> Number</div>
+              <div class="check" data-check="symbol"><span class="dot">○</span> Symbol</div>
+              <div class="check" data-check="unique"><span class="dot">○</span> No obvious repeated pattern</div>
+            </div>
+            <p class="checker-result" id="checkerResult" aria-live="polite">Your result will appear here as you type.</p>
+            <p class="small-print">This is a simple educational estimate, not a security audit. Never type a real password into a website or checker you do not trust.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="awareness">
+      <div class="wrap">
+        <div class="section-head"><div class="kicker">03 / Cyber awareness corner</div><h2>Pause. Check. Protect. Report.</h2><p>Build these small habits into your everyday digital life.</p></div>
+        <div class="awareness">
+          <article class="step-card"><div class="step-num">01 — PAUSE</div><h3>Don't rush</h3><p>Be careful with messages that create panic, pressure you to act quickly or promise unbelievable rewards.</p></article>
+          <article class="step-card"><div class="step-num">02 — CHECK</div><h3>Verify the source</h3><p>Check the full website address and contact the person or organisation through a trusted channel.</p></article>
+          <article class="step-card"><div class="step-num">03 — PROTECT</div><h3>Secure your accounts</h3><p>Use unique passwords, enable MFA, update devices and limit what you share publicly.</p></article>
+          <article class="step-card"><div class="step-num">04 — REPORT</div><h3>Speak up</h3><p>Save relevant evidence, block suspicious accounts and report harmful activity to the platform or appropriate authority.</p></article>
+        </div>
+        <div class="alert"><div style="font-size:24px">⚠️</div><div><strong>Remember: Never share an OTP, PIN or password.</strong><p>A genuine bank or support representative should not ask you to reveal these secret credentials. Ask a trusted adult for help if a message or request feels suspicious.</p></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="facts">
+      <div class="wrap">
+        <div class="section-head"><div class="kicker">04 / Did you know?</div><h2>Cybercrime facts worth remembering.</h2><p>Knowing how digital threats work makes it easier to recognise warning signs.</p></div>
+        <div class="facts-grid">
+          <div class="fact"><div class="fact-mark">01</div><p><strong>Phishing is about deception.</strong> A message or website can imitate a trusted brand or person to trick someone into revealing information.</p></div>
+          <div class="fact"><div class="fact-mark">02</div><p><strong>Ransomware targets access to data.</strong> It can lock or encrypt files and demand payment. Backups and updated software are important protections.</p></div>
+          <div class="fact"><div class="fact-mark">03</div><p><strong>MFA adds another layer.</strong> It asks for an additional proof of identity beyond a password, helping protect accounts.</p></div>
+          <div class="fact"><div class="fact-mark">04</div><p><strong>Scams can use AI.</strong> Fake websites, messages, voices or videos may look convincing. Verify unusual requests through a separate trusted channel.</p></div>
+          <div class="fact"><div class="fact-mark">05</div><p><strong>Cybercrime is broader than hacking.</strong> It can include online financial fraud, impersonation, identity misuse, harassment and harmful software.</p></div>
+          <div class="fact"><div class="fact-mark">06</div><p><strong>Your digital footprint matters.</strong> Photos, location clues and personal details shared online can reveal more than you intend.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="quiz">
+      <div class="wrap">
+        <div class="section-head"><div class="kicker">05 / Knowledge check</div><h2>Are you cyber smart?</h2><p>Answer these quick questions and see how well you can spot common online risks.</p></div>
+        <div class="quiz-shell">
+          <div id="quizPlay">
+            <div class="quiz-top"><span id="questionCount">QUESTION 1 OF 6</span><span id="scoreCount">SCORE: 0</span></div>
+            <div class="quiz-progress"><span id="quizProgress"></span></div>
+            <h3 class="quiz-question" id="quizQuestion">Loading question…</h3>
+            <div class="answers" id="answers"></div>
+            <p class="feedback" id="feedback" aria-live="polite">Choose the best answer.</p>
+            <div class="quiz-actions"><span class="quiz-score" id="liveScore">Keep going!</span><button class="btn btn-primary" id="nextQuestion" type="button" disabled>Next question →</button></div>
+          </div>
+          <div class="quiz-result hidden" id="quizResult" aria-live="polite"><div class="kicker">QUIZ COMPLETE</div><div class="big-score" id="finalScore">0/6</div><h3 id="resultTitle">Nice work!</h3><p id="resultMessage"></p><button class="btn btn-primary" id="restartQuiz" type="button">Try again ↻</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="report-banner">
+          <div><h3>Think you've encountered cyber fraud in India?</h3><p>For financial cyber fraud, call the national helpline <strong>1930</strong> promptly. You can also report cybercrime through the Government of India's National Cyber Crime Reporting Portal.</p></div>
+          <div class="report-actions"><a class="btn btn-primary" href="https://cybercrime.gov.in/" target="_blank" rel="noopener noreferrer">Report cybercrime ↗</a><a class="btn btn-secondary" href="tel:1930">Call 1930</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sources" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-head"><div class="kicker">Learn more</div><h2>Trusted cyber safety resources.</h2><p>This student project is for awareness and learning. For updated guidance, refer to official sources.</p></div>
+        <ul class="source-list">
+          <li><a href="https://www.cert-in.org.in/" target="_blank" rel="noopener noreferrer">CERT-In</a> — Indian Computer Emergency Response Team advisories and awareness material.</li>
+          <li><a href="https://www.cert-in.org.in/PDF/CSH_Booklet25.pdf" target="_blank" rel="noopener noreferrer">CERT-In Digital Safety Compass Handbook</a> — phishing, safe browsing and password practices.</li>
+          <li><a href="https://cybercrime.gov.in/" target="_blank" rel="noopener noreferrer">National Cyber Crime Reporting Portal</a> — Government of India cybercrime reporting.</li>
+          <li><a href="https://www.cert-in.org.in/s2cMainServlet?VLCODE=CIAD-2026-0020&pageid=PUBVLNOTES02" target="_blank" rel="noopener noreferrer">CERT-In advisory (2026)</a> — guidance on deepfake impersonation, suspicious links and account security.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap footer-inner"><span>© <span id="year"></span> CyberWise — Think Before You Click.</span><span>Stay curious. Stay alert. Stay secure. <a class="back-top" href="#home">Back to top ↑</a></span></div></footer>
+
+  <script>
+    // Mobile navigation
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', String(isOpen));
+    });
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    }));
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Password checker: all checks run locally in this page; no network request is made.
+    const passwordInput = document.getElementById('passwordInput');
+    const togglePassword = document.getElementById('togglePassword');
+    const strengthLabel = document.getElementById('strengthLabel');
+    const meterFill = document.getElementById('meterFill');
+    const meter = document.getElementById('meter');
+    const checkerResult = document.getElementById('checkerResult');
+    const commonPatterns = /(password|qwerty|letmein|admin|welcome|123456|abcdef|111111)/i;
+
+    togglePassword.addEventListener('click', () => {
+      const showing = passwordInput.type === 'text';
+      passwordInput.type = showing ? 'password' : 'text';
+      togglePassword.textContent = showing ? 'Show' : 'Hide';
+    });
+
+    function updateCheck(name, passed) {
+      const element = document.querySelector(`[data-check="${name}"]`);
+      element.classList.toggle('good', passed);
+      element.querySelector('.dot').textContent = passed ? '✓' : '○';
+    }
+
+    function checkPassword() {
+      const value = passwordInput.value;
+      const checks = {
+        length: value.length >= 14,
+        lower: /[a-z]/.test(value),
+        upper: /[A-Z]/.test(value),
+        number: /[0-9]/.test(value),
+        symbol: /[^A-Za-z0-9]/.test(value),
+        unique: value.length > 0 && !commonPatterns.test(value) && !/(.)\1{3,}/.test(value) && !/(0123|1234|2345|3456|4567|5678|6789|abcd|bcde|cdef)/i.test(value)
+      };
+      Object.entries(checks).forEach(([name, passed]) => updateCheck(name, passed));
+      if (!value) {
+        strengthLabel.textContent = 'Not checked';
+        meterFill.style.width = '0%';
+        meterFill.style.background = 'var(--danger)';
+        meter.setAttribute('aria-valuenow', '0');
+        checkerResult.textContent = 'Your result will appear here as you type.';
+        return;
+      }
+      const passed = Object.values(checks).filter(Boolean).length;
+      const longBonus = value.length >= 18 ? 1 : 0;
+      const score = Math.min(6, passed + longBonus);
+      const percent = Math.round(score / 6 * 100);
+      let label, color, message;
+      if (score <= 2) { label = 'Weak'; color = 'var(--danger)'; message = 'This sample needs work. Try making it longer and less predictable.'; }
+      else if (score <= 4) { label = 'Fair'; color = 'var(--warning)'; message = 'A useful start. Improve the missing checks and avoid personal details or common phrases.'; }
+      else if (score === 5) { label = 'Strong'; color = 'var(--cyan)'; message = 'Good progress. Make sure it is unique to one account and consider using MFA.'; }
+      else { label = 'Very strong pattern'; color = 'var(--lime)'; message = 'This sample passes the checks in this simple demo. No checker can guarantee that a password is safe.'; }
+      strengthLabel.textContent = label;
+      meterFill.style.width = percent + '%';
+      meterFill.style.background = color;
+      meter.setAttribute('aria-valuenow', String(percent));
+      checkerResult.textContent = message;
+    }
+    passwordInput.addEventListener('input', checkPassword);
+
+    // Knowledge quiz
+    const quiz = [
+      { q: 'You receive a message saying your account will be blocked in 10 minutes unless you click a link. What should you do?', a: ['Click quickly to save the account', 'Verify through the official app or website', 'Forward it to all your friends', 'Reply with your password'], correct: 1, why: 'Urgent messages are a common pressure tactic. Check through a trusted official channel instead of using the message link.' },
+      { q: 'Which password habit is safest?', a: ['Use one password everywhere', 'Use your birthday', 'Use a long, unique password for each account', 'Use 123456 with your name'], correct: 2, why: 'Unique passwords reduce the risk that one exposed password will unlock multiple accounts.' },
+      { q: 'A person claiming to be from your bank asks for your OTP. What should you do?', a: ['Share it if they sound professional', 'Share only half of it', 'Do not share it; contact the bank through an official channel', 'Post it in a private group'], correct: 2, why: 'An OTP is a secret verification code. Do not disclose it to callers or message senders.' },
+      { q: 'What does multi-factor authentication (MFA) do?', a: ['Adds another verification step', 'Makes passwords unnecessary in every case', 'Deletes spam messages', 'Makes your account public'], correct: 0, why: 'MFA requires an additional proof of identity beyond the password.' },
+      { q: 'You see a shocking video or voice message asking for urgent money. What is the safest response?', a: ['Send money immediately', 'Verify the request directly with the person using another trusted method', 'Share the message publicly', 'Assume it must be genuine'], correct: 1, why: 'Impersonation can use convincing audio or video. Verify unusual requests separately before acting.' },
+      { q: 'What should you do after noticing an online financial fraud in India?', a: ['Wait a few weeks', 'Delete all messages and do nothing', 'Call 1930 promptly and report through the official portal', 'Share your PIN with the caller'], correct: 2, why: 'India’s National Cyber Crime Reporting Portal directs victims of financial cyber fraud to call 1930 and report online.' }
+    ];
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+    const quizPlay = document.getElementById('quizPlay');
+    const quizResult = document.getElementById('quizResult');
+    const questionCount = document.getElementById('questionCount');
+    const scoreCount = document.getElementById('scoreCount');
+    const quizProgress = document.getElementById('quizProgress');
+    const quizQuestion = document.getElementById('quizQuestion');
+    const answers = document.getElementById('answers');
+    const feedback = document.getElementById('feedback');
+    const nextQuestion = document.getElementById('nextQuestion');
+    const liveScore = document.getElementById('liveScore');
+
+    function renderQuestion() {
+      answered = false;
+      const item = quiz[currentQuestion];
+      questionCount.textContent = `QUESTION ${currentQuestion + 1} OF ${quiz.length}`;
+      scoreCount.textContent = `SCORE: ${score}`;
+      quizProgress.style.width = `${currentQuestion / quiz.length * 100}%`;
+      quizQuestion.textContent = item.q;
+      answers.innerHTML = '';
+      item.a.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'answer';
+        button.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+        button.addEventListener('click', () => chooseAnswer(index));
+        answers.appendChild(button);
+      });
+      feedback.textContent = 'Choose the best answer.';
+      nextQuestion.disabled = true;
+      nextQuestion.textContent = currentQuestion === quiz.length - 1 ? 'See results →' : 'Next question →';
+      liveScore.textContent = 'Keep going!';
+    }
+
+    function chooseAnswer(index) {
+      if (answered) return;
+      answered = true;
+      const item = quiz[currentQuestion];
+      const buttons = [...answers.querySelectorAll('button')];
+      buttons.forEach((button, i) => {
+        button.disabled = true;
+        if (i === item.correct) button.classList.add('correct');
+        if (i === index && i !== item.correct) button.classList.add('wrong');
+      });
+      if (index === item.correct) {
+        score++;
+        feedback.textContent = `✓ ${item.why}`;
+        liveScore.textContent = 'Well done!';
+      } else {
+        feedback.textContent = `Not quite. ${item.why}`;
+        liveScore.textContent = 'Keep learning!';
+      }
+      scoreCount.textContent = `SCORE: ${score}`;
+      nextQuestion.disabled = false;
+    }
+
+    nextQuestion.addEventListener('click', () => {
+      if (!answered) return;
+      currentQuestion++;
+      if (currentQuestion < quiz.length) {
+        renderQuestion();
+      } else {
+        quizPlay.classList.add('hidden');
+        quizResult.classList.remove('hidden');
+        quizProgress.style.width = '100%';
+        document.getElementById('finalScore').textContent = `${score}/${quiz.length}`;
+        const title = score === quiz.length ? 'Cyber safety superstar!' : score >= 4 ? 'Great awareness!' : 'Every step counts!';
+        const message = score === quiz.length ? 'Excellent work — keep using these habits online.' : score >= 4 ? 'You have a solid foundation. Review the explanations and keep practising.' : 'Review the awareness corner and try again. Learning to pause and verify is a great start.';
+        document.getElementById('resultTitle').textContent = title;
+        document.getElementById('resultMessage').textContent = message;
+      }
+    });
+    document.getElementById('restartQuiz').addEventListener('click', () => {
+      currentQuestion = 0; score = 0;
+      quizResult.classList.add('hidden');
+      quizPlay.classList.remove('hidden');
+      renderQuestion();
+    });
+    renderQuestion();
+  </script>
+</body>
+</html>
